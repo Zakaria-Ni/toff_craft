@@ -19,7 +19,6 @@
     /* Menu Styles */
     #menu-container {
       display: block;
-      /* Visible by default */
     }
 
     h1 {
@@ -91,7 +90,6 @@
     /* Fullscreen Game Overlay Styles */
     #game-container {
       display: none;
-      /* Hidden by default */
       position: fixed;
       top: 0;
       left: 0;
@@ -184,9 +182,9 @@
       document.getElementById('menu-container').style.display = 'none';
       document.getElementById('game-container').style.display = 'block';
 
-      // Load the game file into the iframe
-      var src = new URL(gameFile, window.location.href).href;
-      document.getElementById('game-frame').src = src;
+      // Directly assign the game filename to the iframe src.
+      // This works flawlessly on GitHub Pages.
+      document.getElementById('game-frame').src = gameFile;
     }
 
     // 2. Function to close the game and return to the menu
@@ -200,23 +198,32 @@
 
     // 3. Function to cloak the ENTIRE PORTAL in an about:blank tab
     function cloakPortal() {
+      // Don't run if we are already in an iframe (prevents infinite loops)
+      if (window !== window.top) {
+        alert("You are already in a cloaked tab!");
+        return;
+      }
+
       var win = window.open('about:blank', '_blank');
       if (!win) {
         alert("Pop-up blocked! Please allow pop-ups to cloak the site.");
         return;
       }
 
-      // Copy the entire current page into the blank tab
+      var currentURL = window.location.href;
+
+      // Create an iframe in the blank tab pointing to your GitHub URL
       win.document.write(
         '<!DOCTYPE html><html><head><title>Home</title>' +
-        document.head.innerHTML +
+        '<style>body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; } ' +
+        'iframe { width: 100%; height: 100%; border: none; }</style>' +
         '</head><body>' +
-        document.body.innerHTML +
+        '<iframe src="' + currentURL + '"></iframe>' +
         '</body></html>'
       );
       win.document.close();
 
-      // Optional: Replace current tab with Google so a teacher doesn't see the original tab
+      // Replace current tab with Google Classroom so the original tab disappears
       window.location.replace('https://classroom.google.com');
     }
   </script>
