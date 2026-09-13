@@ -38,31 +38,6 @@
       border: 1px solid #2a2a2a;
     }
 
-    .stealth-banner {
-      background-color: #222;
-      border: 1px dashed #444;
-      max-width: 500px;
-      margin: 0 auto 40px auto;
-      padding: 15px;
-      border-radius: 8px;
-    }
-
-    .stealth-btn {
-      background-color: #007aff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .stealth-btn:hover {
-      background-color: #0056b3;
-    }
-
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -94,13 +69,7 @@
 <body>
 
   <h1>toff craft</h1>
-  <p class="subtitle">Select a game below to launch it inside an un-trackable layout page.</p>
-
-  <!-- Master Cloak Option -->
-  <div class="stealth-banner">
-    <div>Want to hide this entire selection menu tab too?</div>
-    <button class="stealth-btn" onclick="cloakEntireMenu()">Launch Stealth Hub Menu</button>
-  </div>
+  <p class="subtitle">Select a game below to launch it instantly in a new tab.</p>
 
   <!-- Your Introduction Writing -->
   <div class="intro-text">
@@ -118,7 +87,7 @@
     winning strategies is relatively straightforward.
   </div>
 
-  <!-- The Interactive Games Grid matched precisely to your sidebar files -->
+  <!-- The Interactive Games Grid mapped precisely to your sidebar files -->
   <div class="game-grid">
     <button class="game-card" onclick="launchGame('Csgo-clicker.html')">🕹️ CSGO Clicker</button>
     <button class="game-card" onclick="launchGame('Dogeminer.html')">🐕 Dogeminer</button>
@@ -133,38 +102,11 @@
   </div>
 
   <script>
+    // Bypasses embedding blocks entirely to ensure games load without a black screen
     function launchGame(gameFile) {
-      var win = window.open('about:blank', '_blank');
-      if (win) {
-        win.document.body.style.margin = '0';
-        win.document.body.style.height = '100vh';
-        win.document.body.style.backgroundColor = '#000';
-
-        var iframe = win.document.createElement('iframe');
-        iframe.style.border = 'none';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.src = 'https://github.io' + gameFile;
-
-        win.document.body.appendChild(iframe);
-      }
-    }
-
-    function cloakEntireMenu() {
-      var win = window.open('about:blank', '_blank');
-      if (win) {
-        win.document.body.style.margin = '0';
-        win.document.body.style.height = '100vh';
-        win.document.body.style.backgroundColor = '#121212';
-
-        var iframe = win.document.createElement('iframe');
-        iframe.style.border = 'none';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.src = 'https://github.io';
-
-        win.document.body.appendChild(iframe);
-        window.location.replace("https://google.com");
+      var gameWindow = window.open(gameFile, '_blank');
+      if (!gameWindow) {
+        alert('Please allow pop-ups to launch games.');
       }
     }
   </script>
