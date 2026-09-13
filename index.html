@@ -27,7 +27,7 @@
 
     .intro-text {
       max-width: 800px;
-      margin: 0 auto 50px auto;
+      margin: 0 auto 40px auto;
       text-align: justify;
       line-height: 1.6;
       color: #dddddd;
@@ -38,6 +38,31 @@
       border: 1px solid #2a2a2a;
     }
 
+    .stealth-banner {
+      background-color: #222;
+      border: 1px dashed #444;
+      max-width: 500px;
+      margin: 0 auto 40px auto;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .stealth-btn {
+      background-color: #007aff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .stealth-btn:hover {
+      background-color: #0056b3;
+    }
+
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -46,7 +71,7 @@
       margin: 0 auto;
     }
 
-    button {
+    .game-card {
       background-color: #1e1e1e;
       color: white;
       border: 2px solid #333;
@@ -58,7 +83,7 @@
       font-weight: bold;
     }
 
-    button:hover {
+    .game-card:hover {
       background-color: #2a2a2a;
       border-color: #007aff;
       transform: translateY(-2px);
@@ -69,8 +94,15 @@
 <body>
 
   <h1>toff craft</h1>
-  <p class="subtitle">All games below launch seamlessly inside clean un-trackable frames.</p>
+  <p class="subtitle">Select a game below to launch it inside an un-trackable layout page.</p>
 
+  <!-- Master Cloak Option -->
+  <div class="stealth-banner">
+    <div>Want to hide this entire selection menu tab too?</div>
+    <button class="stealth-btn" onclick="cloakEntireMenu()">Launch Stealth Hub Menu</button>
+  </div>
+
+  <!-- Your Introduction Writing -->
   <div class="intro-text">
     At their core, Toff graph games are finite, perfect-information games played by two players who alternate moves or
     one player depending on what game you are playing. The game state is defined by a graph—consisting of a set of
@@ -86,57 +118,24 @@
     winning strategies is relatively straightforward.
   </div>
 
+  <!-- The Interactive Games Grid matched precisely to your sidebar files -->
   <div class="game-grid">
-    <button onclick="launchGame('Csgo-clicker.html')">🕹️ CSGO Clicker</button>
-    <button onclick="launchGame('Dogeminer.html')">🐕 Dogeminer</button>
-    <button onclick="launchGame('Escape runway 2.html')">🏃 Escape Runway 2</button>
-    <button onclick="launchGame('Sky race 3D.html')">🚀 Sky Race 3D</button>
-    <button onclick="launchGame('Backrooms.html')">🕳️ Backrooms</button>
-    <button onclick="launchGame('Granny.html')">👵 Granny</button>
-    <button onclick="launchGame('Minecraft-1122.html')">⛏️ Minecraft 1.12.2</button>
-    <button onclick="launchGame('minecraft-1162.html')">🧱 Minecraft 1.16.2</button>
-    <button onclick="launchGame('Summer-Rider-3D.html')">🏍️ Summer Rider 3D</button>
-    <button onclick="launchGame('99-nights.html')">🌲 99 Nights in the Forest</button>
+    <button class="game-card" onclick="launchGame('Csgo-clicker.html')">🕹️ CSGO Clicker</button>
+    <button class="game-card" onclick="launchGame('Dogeminer.html')">🐕 Dogeminer</button>
+    <button class="game-card" onclick="launchGame('Escape-runway 2.html')">🏃 Escape Runway 2</button>
+    <button class="game-card" onclick="launchGame('Sky-race-3D.html')">🚀 Sky Race 3D</button>
+    <button class="game-card" onclick="launchGame('Backrooms.html')">🕳️ Backrooms</button>
+    <button class="game-card" onclick="launchGame('Granny.html')">👵 Granny</button>
+    <button class="game-card" onclick="launchGame('Minecraft-1122.html')">⛏️ Minecraft 1.12.2</button>
+    <button class="game-card" onclick="launchGame('minecraft-1162.html')">🧱 Minecraft 1.16.2</button>
+    <button class="game-card" onclick="launchGame('Summer-Rider-3D.html')">🏍️ Summer Rider 3D</button>
+    <button class="game-card" onclick="launchGame('99-nights.html')">🌲 99 Nights in the Forest</button>
   </div>
 
   <script>
-    // Self-executing script: Checks if the current window is already stealth-cloaked
-    (function () {
-      if (window.name !== "stealth_session" && window.location.href.indexOf("github.io") !== -1) {
-        // 1. Generate a brand new completely empty page tab
-        var stealthWin = window.open('about:blank', '_blank');
-        if (stealthWin) {
-          stealthWin.document.body.style.margin = '0';
-          stealthWin.document.body.style.height = '100vh';
-          stealthWin.document.body.style.backgroundColor = '#121212';
-
-          // 2. Clone the main website directory framework straight inside it
-          var menuFrame = stealthWin.document.createElement('iframe');
-          menuFrame.style.border = 'none';
-          menuFrame.style.width = '100%';
-          menuFrame.style.height = '100%';
-          menuFrame.src = window.location.href;
-
-          // Set window properties so the child items understand they are inside the cloak
-          stealthWin.name = "stealth_session";
-          stealthWin.document.body.appendChild(menuFrame);
-
-          // 3. Automatically close or redirect original tracking window tab
-          window.location.replace("https://google.com");
-        }
-      }
-    })();
-
-    // Function to run when individual game selections are pushed
     function launchGame(gameFile) {
-      var targetUrl = 'https://github.io' + gameFile;
-
-      // If the menu dashboard is already cloaked, change frame source to load it in-place
-      if (window.name === "stealth_session" || window.parent.name === "stealth_session") {
-        window.location.href = targetUrl;
-      } else {
-        // Backup fallback method if opened raw
-        var win = window.open('about:blank', '_blank');
+      var win = window.open('about:blank', '_blank');
+      if (win) {
         win.document.body.style.margin = '0';
         win.document.body.style.height = '100vh';
         win.document.body.style.backgroundColor = '#000';
@@ -145,8 +144,27 @@
         iframe.style.border = 'none';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
-        iframe.src = targetUrl;
+        iframe.src = 'https://github.io' + gameFile;
+
         win.document.body.appendChild(iframe);
+      }
+    }
+
+    function cloakEntireMenu() {
+      var win = window.open('about:blank', '_blank');
+      if (win) {
+        win.document.body.style.margin = '0';
+        win.document.body.style.height = '100vh';
+        win.document.body.style.backgroundColor = '#121212';
+
+        var iframe = win.document.createElement('iframe');
+        iframe.style.border = 'none';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.src = 'https://github.io';
+
+        win.document.body.appendChild(iframe);
+        window.location.replace("https://google.com");
       }
     }
   </script>
