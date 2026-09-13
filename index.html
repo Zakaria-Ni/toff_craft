@@ -102,38 +102,27 @@
   </div>
 
   <script>
+    // Opens a blank tab and loads the game inside an iframe,
+    // so the tab's address bar stays on "about:blank" instead of
+    // showing the game file's real path.
     function launchGame(gameFile) {
-      var fullUrl = 'https://github.io' + gameFile;
-      var gameWindow = window.open('about:blank', '_blank');
-
+      var w = Math.round(screen.availWidth * 0.9);
+      var h = Math.round(screen.availHeight * 0.9);
+      var left = Math.round((screen.availWidth - w) / 2);
+      var top = Math.round((screen.availHeight - h) / 2);
+      var features = 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top +
+        ',resizable=yes,scrollbars=yes';
+      var gameWindow = window.open('about:blank', '_blank', features);
       if (!gameWindow) {
         alert('Please allow pop-ups to launch games.');
         return;
       }
-
-      // Smart Injector: Opens the file and forcefully overwrites any restricted small layouts 
+      var src = encodeURI(gameFile);
       gameWindow.document.write(
-        '<!DOCTYPE html><html><head><title>toff craft</title>' +
-        '<style>' +
-        'html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#121212; }' +
-        'iframe { border:0; width:100%; height:100%; display:block; }' +
-        '</style></head><body>' +
-        '<iframe id="gameFrame" src="' + fullUrl + '" allowfullscreen></iframe>' +
-        '<script>' +
-        'var frame = document.getElementById("gameFrame");' +
-        'frame.onload = function() {' +
-        '  try {' +
-        '    var innerDoc = frame.contentDocument || frame.contentWindow.document;' +
-        '    var internalIframes = innerDoc.getElementsByTagName("iframe");' +
-        '    for(var i=0; i<internalIframes.length; i++) {' +
-        '      internalIframes[i].style.width = "100%";' +
-        '      internalIframes[i].style.height = "100vh";' +
-        '      internalIframes[i].style.maxHeight = "100vh";' +
-        '      internalIframes[i].height = "100%";' +
-        '    }' +
-        '  } catch(e) { console.log("Cross-origin box bypass applied"); }' +
-        '};' +
-        '<\/script></body></html>'
+        '<!DOCTYPE html><html><head><title>' + gameFile + '</title>' +
+        '<style>html,body{margin:0;height:100%;background:#121212;}' +
+        'iframe{border:0;width:100%;height:100%;}</style></head>' +
+        '<body><iframe src="' + src + '" allowfullscreen></iframe></body></html>'
       );
       gameWindow.document.close();
     }
