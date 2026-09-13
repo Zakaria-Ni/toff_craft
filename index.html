@@ -1,133 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>toff craft</title>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Karlson 2D</title>
   <style>
+    html,
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      text-align: center;
-      padding: 50px 20px;
+      padding: 0;
       margin: 0;
+      background: #231F20;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
+    #unity-container {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
     }
 
-    .subtitle {
-      color: #aaa;
-      margin-bottom: 30px;
+    #unity-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #231F20;
     }
 
-    .intro-text {
-      max-width: 800px;
-      margin: 0 auto 40px auto;
-      text-align: justify;
-      line-height: 1.6;
-      color: #dddddd;
-      font-size: 1.1rem;
-      background-color: #1a1a1a;
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid #2a2a2a;
+    #unity-loading-bar {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
     }
 
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      max-width: 900px;
-      margin: 0 auto;
+    #unity-logo {
+      width: 154px;
+      height: 130px;
+      background: url('https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/TemplateData/unity-logo-dark.png') no-repeat center;
     }
 
-    .game-card {
-      background-color: #1e1e1e;
-      color: white;
-      border: 2px solid #333;
-      padding: 25px 20px;
-      font-size: 1.2rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: bold;
+    #unity-progress-bar-empty {
+      width: 141px;
+      height: 18px;
+      margin-top: 10px;
+      margin-left: 6.5px;
+      background: url('https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/TemplateData/progress-bar-empty-dark.png') no-repeat center;
     }
 
-    .game-card:hover {
-      background-color: #2a2a2a;
-      border-color: #007aff;
-      transform: translateY(-2px);
+    #unity-progress-bar-full {
+      width: 0%;
+      height: 18px;
+      margin-top: 10px;
+      background: url('https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/TemplateData/progress-bar-full-dark.png') no-repeat center;
+    }
+
+    #unity-footer {
+      display: none !important;
+    }
+
+    #unity-warning {
+      position: absolute;
+      left: 50%;
+      top: 5%;
+      transform: translate(-50%);
+      background: white;
+      padding: 10px;
+      display: none;
+      z-index: 10;
     }
   </style>
+  <link rel="shortcut icon"
+    href="https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/TemplateData/favicon.ico">
 </head>
 
 <body>
-
-  <h1>toff craft</h1>
-  <p class="subtitle">Select a game below to launch it instantly in a new tab.</p>
-
-  <!-- Your Introduction Writing -->
-  <div class="intro-text">
-    At their core, Toff graph games are finite, perfect-information games played by two players who alternate moves or
-    one player depending on what game you are playing. The game state is defined by a graph—consisting of a set of
-    vertices connected by edges—and a set of tokens or markers placed on these vertices. Depending on the specific
-    ruleset of the variation, a valid move involves moving a token along an edge to an adjacent vertex, removing a
-    vertex from the graph, or coloring a portion of the network. The most common iteration follows normal play
-    convention, where the last player to make a legal move wins, and a player who cannot move loses. Because the
-    available moves depend solely on the current state of the graph and not on which player's turn it is, Toff graph
-    games are classified as impartial games. This classification allows mathematicians to analyze them using the
-    Sprague-Grundy theorem, assigns a "Grundy value" or "nim-value" to each graph configuration, and reduces complex
-    geometric or structural states to a single numeric equivalent. The strategy of a Toff graph game is inextricably
-    linked to the topology of the underlying network. On simple structures, such as paths, cycles, or trees, calculating
-    winning strategies is relatively straightforward.
-  </div>
-
-  <!-- The Interactive Games Grid mapped precisely to your sidebar files -->
-  <div class="game-grid">
-    <button class="game-card" onclick="launchGame('Csgo-clicker.html')">🕹️ CSGO Clicker</button>
-    <button class="game-card" onclick="launchGame('Dogeminer.html')">🐕 Dogeminer</button>
-    <button class="game-card" onclick="launchGame('Escape-runway 2.html')">🏃 Escape Runway 2</button>
-    <button class="game-card" onclick="launchGame('Sky-race-3D.html')">🚀 Sky Race 3D</button>
-    <button class="game-card" onclick="launchGame('Backrooms.html')">🕳️ Backrooms</button>
-    <button class="game-card" onclick="launchGame('Granny.html')">👵 Granny</button>
-    <button class="game-card" onclick="launchGame('Minecraft-1122.html')">⛏️ Minecraft 1.12.2</button>
-    <button class="game-card" onclick="launchGame('minecraft-1162.html')">🧱 Minecraft 1.16.2</button>
-    <button class="game-card" onclick="launchGame('Summer-Rider-3D.html')">🏍️ Summer Rider 3D</button>
-    <button class="game-card" onclick="launchGame('99-nights.html')">🌲 99 Nights in the Forest</button>
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+    <div id="unity-warning"> </div>
+    <div id="unity-footer">
+      <div id="unity-logo-title-footer"></div>
+      <div id="unity-fullscreen-button"></div>
+      <div id="unity-build-title">Karlson 2D</div>
+    </div>
   </div>
 
   <script>
-    // Opens a blank tab and loads the game inside an iframe,
-    // so the tab's address bar stays on "about:blank" instead of
-    // showing the game file's real path.
-    function launchGame(gameFile) {
-      var w = Math.round(screen.availWidth * 0.9);
-      var h = Math.round(screen.availHeight * 0.9);
-      var left = Math.round((screen.availWidth - w) / 2);
-      var top = Math.round((screen.availHeight - h) / 2);
-      var features = 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top +
-        ',resizable=yes,scrollbars=yes';
-      var gameWindow = window.open('about:blank', '_blank', features);
-      if (!gameWindow) {
-        alert('Please allow pop-ups to launch games.');
-        return;
-      }
-      var src = new URL(gameFile, window.location.href).href;
-      gameWindow.document.write(
-        '<!DOCTYPE html><html><head><title>' + gameFile + '</title>' +
-        '<style>html,body{margin:0;height:100%;background:#121212;}' +
-        'iframe{border:0;width:100%;height:100%;}</style></head>' +
-        '<body><iframe src="' + src + '" allowfullscreen></iframe></body></html>'
-      );
-      gameWindow.document.close();
-    }
-  </script>
+    var canvas = document.querySelector("#unity-canvas");
 
+    function unityShowBanner(msg, type) {
+      var warningBanner = document.querySelector("#unity-warning");
+      function updateBannerVisibility() {
+        warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+      }
+      var div = document.createElement('div');
+      div.innerHTML = msg;
+      warningBanner.appendChild(div);
+      if (type == 'error') div.style = 'background: red; padding: 10px;';
+      else {
+        if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+        setTimeout(function () {
+          warningBanner.removeChild(div);
+          updateBannerVisibility();
+        }, 5000);
+      }
+      updateBannerVisibility();
+    }
+
+    var buildUrl = "https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/Build";
+    var loaderUrl = buildUrl + "/test2.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/test2.data",
+      frameworkUrl: buildUrl + "/test2.framework.js",
+      codeUrl: buildUrl + "/test2.wasm",
+      streamingAssetsUrl: "https://cdn.jsdelivr.net/gh/PopsicleYT/pinkdih-ports@main/karlson2dweb/StreamingAssets",
+      companyName: "pinktiplmao",
+      productName: "karlson2dport",
+      productVersion: "1.0",
+      showBanner: unityShowBanner,
+      matchWebGLToCanvasSize: true,
+    };
+    var meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    document.querySelector("#unity-loading-bar").style.display = "block";
+    fetch(loaderUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.text();
+      })
+      .then((code) => {
+        var blob = new Blob([code], { type: "text/javascript" });
+        var script = document.createElement("script");
+        script.src = URL.createObjectURL(blob);
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+          }).then((unityInstance) => {
+            document.querySelector("#unity-loading-bar").style.display = "none";
+          }).catch((message) => {
+            alert(message);
+          });
+        };
+        script.onerror = () => {
+          unityShowBanner("Failed to execute the game loader script.", "error");
+        };
+        document.body.appendChild(script);
+      })
+      .catch((err) => {
+        unityShowBanner("Failed to fetch the game loader script: " + err.message, "error");
+      });
+  </script>
 </body>
 
 </html>
