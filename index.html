@@ -64,7 +64,27 @@
 
     .subtitle {
       color: #aaa;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+    }
+
+    /* --- Question Button Style --- */
+    .question-btn {
+      display: inline-block;
+      background-color: #1a1a1a;
+      color: #007aff;
+      border: 1px solid #007aff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      transition: all 0.2s ease;
+    }
+
+    .question-btn:hover {
+      background-color: #007aff;
+      color: white;
     }
 
     .intro-text {
@@ -104,6 +124,22 @@
       background-color: #2a2a2a;
       border-color: #007aff;
       transform: translateY(-2px);
+    }
+
+    /* --- Footer Styles --- */
+    footer {
+      margin-top: 50px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #007aff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
     }
 
     /* --- Fullscreen Game Overlay Styles --- */
@@ -158,6 +194,11 @@
   <div id="menu-container">
     <h1>toff craft</h1>
     <p class="subtitle">Select a game below to play.</p>
+    
+    <!-- TOP QUESTION LINK -->
+    <div>
+      <a href="https://forms.gle/jhqjHT2XHJWDvs2N9" target="_blank" class="question-btn">❓ Have a Question or Request?</a>
+    </div>
 
     <div class="intro-text">
       At their core, Toff graph games are finite, perfect-information games played by two players who alternate moves or
@@ -188,6 +229,11 @@
       <button class="game-card" onclick="launchGame('99-nights.html')">🌲 99 Nights in the Forest</button>
       <button class="game-card" onclick="launchGame('slope.html')">🌲 Slope</button>
     </div>
+
+    <!-- BOTTOM FOOTER LINK -->
+    <footer>
+      <p>Have any questions or suggestions? <a href="https://forms.gle/jhqjHT2XHJWDvs2N9" target="_blank">Fill out the form here</a>.</p>
+    </footer>
   </div>
 
   <!-- THE FULLSCREEN GAME OVERLAY -->
