@@ -141,45 +141,6 @@
     footer a:hover {
       text-decoration: underline;
     }
-
-    /* --- Fullscreen Game Overlay Styles --- */
-    #game-container {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #000000;
-      z-index: 9999;
-    }
-
-    #game-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .back-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background-color: rgba(0, 0, 0, 0.6);
-      color: white;
-      border: 2px solid #555;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      z-index: 10000;
-      transition: all 0.2s;
-    }
-
-    .back-btn:hover {
-      background-color: #ff3b30;
-      border-color: #ff3b30;
-    }
   </style>
 </head>
 
@@ -236,15 +197,13 @@
     </footer>
   </div>
 
-  <!-- THE FULLSCREEN GAME OVERLAY -->
-  <div id="game-container">
-    <button class="back-btn" onclick="closeGame()">🔙 Back to Menu</button>
-    <iframe id="game-frame" src="" allow="fullscreen; autoplay; gamepad; pointer-lock" allowfullscreen></iframe>
-  </div>
-
   <script>
+    var baseUrl = '';
+
     function autoCloak() {
-      // 1. Try to open the blank tab
+      var currentUrl = window.location.href;
+      baseUrl = currentUrl.split('?')[0].replace(/[^/]*$/, '');
+
       var win = window.open('about:blank', '_blank');
 
       if (!win) {
@@ -252,34 +211,34 @@
         return;
       }
 
-      // 2. Get the exact GitHub folder URL we are currently in
-      var currentUrl = window.location.href;
-      var baseUrl = currentUrl.split('?')[0].replace(/[^/]*$/, '');
-
-      // 3. Rebuild the exact website inside the blank tab using a <base> tag
       win.document.write(
         '<!DOCTYPE html>' +
         '<html lang="en">' +
         '<head>' +
         '<meta charset="UTF-8">' +
         '<title>Home</title>' +
-        '<base href="' + baseUrl + '">' + // Magic fix: forces games to load from GitHub instead of about:blank
+        '<base href="' + baseUrl + '">' +
         '<style>' + document.querySelector('style').innerHTML + '</style>' +
-        '<style>#enter-overlay { display: none !important; }</style>' + // Hides the "Click anywhere" screen in the new tab
+        '<style>#enter-overlay { display: none !important; }</style>' +
         '</head>' +
         '<body>' +
         document.getElementById('menu-container').outerHTML +
-        document.getElementById('game-container').outerHTML +
         '<script>' +
+        'var baseUrl = "' + baseUrl + '";' +
         'function launchGame(gameFile) {' +
-        '  document.getElementById("menu-container").style.display = "none";' +
-        '  document.getElementById("game-container").style.display = "block";' +
-        '  document.getElementById("game-frame").src = gameFile;' +
-        '}' +
-        'function closeGame() {' +
-        '  document.getElementById("game-container").style.display = "none";' +
-        '  document.getElementById("menu-container").style.display = "block";' +
-        '  document.getElementById("game-frame").src = "";' +
+        '  var gameWin = window.open("about:blank", "_blank");' +
+        '  if (!gameWin) { alert("Popup blocked!"); return; }' +
+        '  gameWin.document.write(' +
+        '    "<!DOCTYPE html>" +' +
+        '    "<html><head>" +' +
+        '    "<title>Game</title>" +' +
+        '    "<base href=\'" + baseUrl + "\'>" + ' +
+        '    "<style>body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }</style>" +' +
+        '    "</head><body>" +' +
+        '    "<iframe src=\'" + gameFile + "\' style=\'width:100%; height:100%; border:none;\' allow=\'fullscreen; autoplay; gamepad; pointer-lock\' allowfullscreen></iframe>" +' +
+        '    "</body></html>"' +
+        '  );' +
+        '  gameWin.document.close();' + // Fixed: closed the document stream properly
         '}' +
         '<' + '/script>' +
         '</body>' +
@@ -287,8 +246,6 @@
       );
 
       win.document.close();
-
-      // 4. Instantly redirect the original, visible tab to Google
       window.location.replace('https://www.google.com');
     }
   </script>
